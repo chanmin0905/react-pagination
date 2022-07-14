@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
+import Pagination from "./Pagination";
 
 const Posts = () => {
   // 총 게시물 수
@@ -24,7 +25,9 @@ const Posts = () => {
     });
   }, []);
 
-  const countedPosts = () => {};
+  const countedPosts = ({ target }) => {
+    setLimit(Number(target.value));
+  };
 
   return (
     <>
@@ -35,13 +38,7 @@ const Posts = () => {
 
         <label>
           페이지 당 표시할 게시물:&nbsp;
-          <select
-            type="number"
-            value={limit}
-            onChange={({ target }) => {
-              setLimit(Number(target.value));
-            }}
-          >
+          <select type="number" value={limit} onChange={countedPosts}>
             <option value="10">10</option>
             <option value="12">12</option>
             <option value="20">20</option>
@@ -62,6 +59,15 @@ const Posts = () => {
             );
           })}
         </main>
+
+        <footer>
+          <Pagination
+            total={posts.length}
+            limit={limit}
+            page={page}
+            setPage={setPage}
+          />
+        </footer>
       </Layout>
     </>
   );
